@@ -1,0 +1,220 @@
+module key_control( input         Clk,                // 50 MHz clock
+                             Reset,              // Active-high reset signal
+                             frame_clk,          // The clock indicating a new frame (~60Hz)
+               input [7:0]   keycode,keycode_2,
+               output logic  left,attack,thump);
+	 logic[1:0] left_in,left_in_1,attack_in,thump_in,attack_in_1,thump_in_1;				
+    logic frame_clk_delayed, frame_clk_rising_edge;
+	 `timescale 10ms/1ms
+	 parameter p=500;
+    always_ff @ (posedge Clk) begin
+        frame_clk_delayed <= frame_clk;
+        frame_clk_rising_edge <= (frame_clk == 1'b1) && (frame_clk_delayed == 1'b0);
+    end
+	 enum logic [10:0] {RIGHT,LEFT,ATTACK,THUMP} curr_state, next_state;
+   logic[15:0] key;
+	assign key={keycode_2,keycode};
+	always_ff @ (posedge Clk)  
+   begin
+        if (Reset)
+            curr_state<=RIGHT;
+        else 
+            curr_state<=next_state;
+   end
+
+	always_ff @ (posedge frame_clk)
+	begin
+		if (Reset) 
+		begin
+			left_in_1<=2'b0;
+			attack_in_1<=2'b0;
+			thump_in_1<=2'b0;
+			end
+		else 
+			left_in_1 <= left_in;
+			attack_in_1<=attack_in;
+			thump_in_1<=thump_in;
+	end
+	
+    // Update registers
+   always_ff @ (posedge frame_clk)
+    begin
+	   next_state=curr_state;
+	 	left_in=left_in_1;
+		attack_in=attack_in_1;
+		thump_in=thump_in_1;
+//		left=1'b0;
+//		attack=1'b0;
+//		thump=1'b0;
+	case (key)
+		16'h04: // A is pressed left
+		begin
+			left_in=2'b1;
+			attack_in=2'b0;
+			thump_in=2'b0;
+		end
+		16'h07: // D is pressed right
+		begin
+			left_in=2'b0;
+			attack_in=2'b0;
+			thump_in=2'b0;
+		end
+//		16'h1a: // W is pressed up
+//		begin
+//			left_in=2'b11;
+//		end
+//		16'h16: // S is pressed down
+//		begin
+//			left_in=2'b11;
+//		end
+		16'h0d:
+		begin
+			attack_in=2'b1;
+			thump_in=2'b0;
+			left_in=2'b0;
+		end
+		16'h0e:
+		begin
+			thump_in=2'b1;
+			attack_in=2'b0;
+			left_in=2'b0;
+		end
+		16'h041a: // AW is pressed left
+		begin
+			left_in=2'b1;
+			attack_in=2'b0;
+			thump_in=2'b0;
+		end
+		16'h1a04: // AW is pressed left
+		begin
+			left_in=2'b1;
+			attack_in=2'b0;
+			thump_in=2'b0;
+		end
+		16'h0416: // AS is pressed left
+		begin
+			left_in=2'b1;
+			attack_in=2'b0;
+			thump_in=2'b0;
+		end
+		16'h1604: // AS is pressed left
+		begin
+			left_in=2'b1;
+			attack_in=2'b0;
+			thump_in=2'b0;
+		end
+
+		16'h0716: // SD is pressed right
+		begin
+			left_in=2'b0;
+			attack_in=2'b0;
+			thump_in=2'b0;
+		end
+		16'h1607: // SD is pressed downright
+		begin
+			left_in=2'b0;
+			attack_in=2'b0;
+			thump_in=2'b0;
+		end
+		16'h071a: // DW is pressed upright
+		begin
+			left_in=2'b0;
+			attack_in=2'b0;
+			thump_in=2'b0;
+		end
+		16'h1a07: // DW is pressed upright
+		begin
+			left_in=2'b0;
+			attack_in=2'b0;
+			thump_in=2'b0;
+		end
+		
+		16'h0704: // AD is pressed left
+		begin
+			left_in=2'b1;
+			attack_in=2'b0;
+			thump_in=2'b0;
+		end
+		16'h0407: // DA is pressed right
+		begin
+			left_in=2'b0;
+			attack_in=2'b0;
+			thump_in=2'b0;
+		end
+//		16'h1a16: // SW is pressed up
+//		begin
+//			left_in=2'b11;
+//		end
+//		16'h161a: // SW is pressed down
+//		begin
+//			left_in=2'b11;
+//		end
+		default : ;
+	endcase
+	 	unique case (curr_state)
+		RIGHT: 
+		begin
+		if(attack_in==2'b1)
+			next_state=ATTACK;
+		else if(thump_in==2'b1)
+			next_state=THUMP;
+		else if (left_in==2'b1)
+
+			next_state=LEFT;
+//	    else if(counter>=15)
+//			 next_state=
+		end
+		LEFT: 
+		begin
+		if(attack_in==2'b1)
+			next_state=ATTACK;
+		else if(thump_in==2'b1)
+			next_state=THUMP;
+		else if(left_in==2'b0)
+			next_state=RIGHT;
+			end
+		ATTACK:
+		#p 
+		next_state=RIGHT;
+		THUMP:
+		#p
+		next_state=RIGHT;
+		
+		
+	endcase
+	 
+
+	case (curr_state) 
+		RIGHT:
+		begin
+			left=1'b0;
+			attack=1'b0;
+			thump=1'b0;
+		end
+		LEFT:
+		begin
+			left=1'b1;
+			attack=1'b0;
+			thump=1'b0;
+		end
+		ATTACK:
+		begin
+		   attack=1'b1;
+			left=1'b0;
+			thump=1'b0;
+			end
+		THUMP:
+		begin
+		   thump=1'b1;
+			attack=1'b0;
+			left=1'b0;
+			end
+	endcase
+	 end
+
+
+
+
+
+	
+endmodule 

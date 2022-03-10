@@ -1,0 +1,37 @@
+module En_ROM
+(
+		input [15:0] read_address,
+		input Clk,
+		input logic [1:0]da,
+		input enemy_left,
+		output logic [23:0] data_Out
+);
+
+// mem has width of 3 bits and a total of 400 addresses
+logic [23:0] mem1 [0:10000];
+logic [23:0] mem2 [0:10000];
+logic [23:0] mem3 [0:10000];
+logic [23:0] mem4 [0:10000];
+initial
+begin
+	 $readmemh("sprite_bytes/move.txt", mem1);
+	 $readmemh("sprite_bytes/1.txt", mem2);
+	 $readmemh("sprite_bytes/4.txt", mem3);
+	 $readmemh("sprite_bytes/7.txt", mem4);	 
+end
+
+logic [23:0] data_out_buffer;
+always_ff @ (posedge Clk) begin
+	data_Out<= data_out_buffer;
+end
+always_comb begin
+	data_out_buffer= mem1[read_address];
+	if(da==2'b1)
+	data_out_buffer=mem3[read_address];
+	else if(da==2'b11)
+	data_out_buffer=mem4[read_address];
+	else if(enemy_left==1'b1)
+		data_out_buffer=mem2[read_address];
+end
+
+endmodule

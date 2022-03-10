@@ -1,0 +1,20 @@
+module  Background( input    Clk,                // 50 MHz clock
+                             Reset,              // Active-high reset signal
+                             frame_clk,          // The clock indicating a new frame (~60Hz)
+                    input [9:0]   DrawX, DrawY,       // Current pixel coordinates
+			        output logic[19:0]  relative_address
+					//   output logic[23:0]  out
+                    );
+    
+    // parameter [9:0] Screen_X_Center = 10'd3    // parameter [9:0] Screen_Y_Center = 10'd240;  // Center position on the Y axis
+    parameter [9:0] Screen_X_Min = 10'd0;       // Leftmost point on the X axis
+    parameter [9:0] Screen_X_Max = 10'd639;     // Rightmost point on the X axis
+    parameter [9:0] Screen_Y_Min = 10'd0;       // Topmost point on the Y axis
+    parameter [9:0] Screen_Y_Max = 10'd479;     // Bottommost point on the Y axis
+    // parameter [9:0] Ball_X_Step = 10'd1;      // Step size on the X axis
+    // parameter [9:0] Ball_Y_Step = 10'd1;      // Step size on the Y axis
+    // parameter [9:0] Ball_X_Size = 10'd30;        // Ball size
+    // parameter [9:0] Ball_Y_Size = 10'd46;        // Ball size
+    assign relative_address=DrawX+ DrawY*(10'd640);
+        
+endmodule

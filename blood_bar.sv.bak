@@ -1,0 +1,48 @@
+module blood_bar (
+    input Clk,
+    input frame_clk,
+    input[6:0] blood,
+    input[3:0] which_one,
+    input [9:0] DrawX, DrawY, 
+    output logic is_blood_bar,
+    output logic [23:0] blood_bar_rgb
+);
+
+
+
+//[2-64][74-82]
+logic [7:0] mem1 [0:10000];
+logic [7:0] data_out_buffer;
+always_ff @ (posedge Clk) begin
+	data_Out<= data_out_buffer;
+	end
+
+endmodule
+
+
+
+logic[15:0] relative_addr;
+always_ff @ (posedge frame_clk) begin
+	relative_addr=DrawX+ DrawY*10'd68;
+end
+
+
+always_comb begin
+    is_blood_bar=(DrawX<10'd68 && DrawY<10'd86);
+    write=1'b0;
+    if(DrawX>blood && DrawX<10'd64 && DrawY>10'd74 && DrawY<10'd82)
+        write=1'b1;
+    data_out_buffer=mem1[relative_addr];
+    if(write)
+        data_out_buffer=8'h2;
+
+end
+
+
+initial
+begin
+	 $readmemh("sprite_bytes/blood_bar.txt", mem1);
+end
+    
+end
+endmodule
