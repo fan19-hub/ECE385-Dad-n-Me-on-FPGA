@@ -1,0 +1,8 @@
+<internal_error>
+	<executable>quartus.exe</executable>
+	<sub_system>MEM</sub_system>
+	<error>*** Fatal Error: Out of memory in module quartus.exe (5861 megabytes used)</error>
+	<date>Wed Dec 29 23:44:31 2021</date>
+	<version>Version 18.1.0 Build 625 09/12/2018 SJ Standard Edition</version>
+</internal_error>
+
