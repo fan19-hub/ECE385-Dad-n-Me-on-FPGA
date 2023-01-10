@@ -1,15 +1,11 @@
 ﻿
 
 
-#ECE385 Fall 2021  
+# ECE385 Fall 2021  
 
 ##  Final Project Report: Dad ’n Me
 
-
-
-
-
-`                                        `![卡通人物描述已自动生成](md_pic/Aspose.Words.a7befe64-76c2-46ac-9115-3863c51f17fa.001.png)
+![卡通人物描述已自动生成](md_pic/Aspose.Words.a7befe64-76c2-46ac-9115-3863c51f17fa.001.png)
 
 **©  [Fan Yang](https://github.com/fan19-hub) © [Chang Su](https://github.com/fan19-hub) © [Ziwen Wang](https://github.com/ziwenwang5)**
 
