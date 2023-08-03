@@ -8,8 +8,11 @@
 ![卡通人物描述已自动生成](md_pic/Aspose.Words.a7befe64-76c2-46ac-9115-3863c51f17fa.001.png)
 
 **©  [Fan Yang](https://github.com/fan19-hub) © [Chang Su](https://github.com/fan19-hub) © [Ziwen Wang](https://github.com/ziwenwang5)**
-
 **Warning: The use of this program for Academic Plagiarism will be severely condemned. However, we encourage you to borrow ideas and use them in your final project**
+
+## Video Demo
+[![Watch the video](md_pic/demoProfile.png)](//player.bilibili.com/player.html?aid=480419715&bvid=BV16T411m7Dv&cid=968134060&page=1)
+
 ### 1. **Main Introduction**  
 
 Dad ‘n Me is a fighting game from Newgrounds released in 2005. It was originally a game based on computer, and we plant the game into FPGA. We copy the photos from the original game and deal them with algorithms, which will be introduced behind detailedly, to reduce their size considering the memory limitation of FPGA. The algorithms allow us set more photos , in both quality and quantity, including the stickers and the backgrounds to make the game more vivid and interesting. And the logic of the game is totally coded by ourselves, we play the game then know how the game is constructed, and try to realized it by FPGA. 
